@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSS APP - GLP School Mundekarad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Anek Malayalam', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ccfbcc 100%);
+            min-height: 100vh;
+        }
+        /* 3D Curved Rectangular Button Styles */
+        .btn-3d-main-1 {
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 0 rgb(4, 120, 87), 0 15px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 2rem;
+        }
+        .btn-3d-main-1:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 rgb(4, 120, 87), 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-3d-main-2 {
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 0 rgb(15, 118, 110), 0 15px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 2rem;
+        }
+        .btn-3d-main-2:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 rgb(15, 118, 110), 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Game Menu Grid Button Styles */
+        .game-grid-btn {
+            transition: all 0.2s ease;
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15), 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .game-grid-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen justify-between">
+
+    <header class="bg-emerald-700 text-white shadow-xl py-4 px-6 sticky top-0 z-50 text-center">
+        <div class="max-w-4xl mx-auto flex flex-col justify-center items-center gap-1">
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-wider uppercase text-yellow-300">LSS APP</h1>
+            <p class="text-xs sm:text-sm font-bold text-emerald-100 tracking-wide">Run by GLP School Mundekarad</p>
+            <div id="user-badge" class="hidden text-xs bg-emerald-800 px-4 py-1.5 rounded-full font-bold shadow-inner border border-emerald-500 mt-2 flex items-center gap-2">
+                <span id="display-user-info">കുട്ടി</span>
+                <button onclick="logout()" class="text-yellow-300 hover:text-white underline ml-2">മാറ്റുക</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-2xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center items-center my-auto">
+
+        <!-- Login View -->
+        <div id="view-login" class="bg-white rounded-3xl p-8 shadow-2xl border border-emerald-200 w-full max-w-md text-center space-y-6">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner font-bold">🎓</div>
+            <div class="space-y-1">
+                <h2 class="text-2xl font-extrabold text-emerald-900">കുട്ടികളുടെ ലോഗിൻ</h2>
+                <p class="text-xs text-slate-500 font-medium">ആപ്പിലേക്ക് പ്രവേശിക്കാൻ നിങ്ങളുടെ പേരും ക്ലാസും തിരഞ്ഞെടുക്കുക</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">കുട്ടിയുടെ പേര് (Name):</label>
+                    <input type="text" id="student-name" required class="w-full border rounded-2xl p-3.5 text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50" placeholder="ഉദാ: അഫ്സൽ / ഫാത്തിമ">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">ക്ലാസ് (Class):</label>
+                    <select id="student-class" required class="w-full border rounded-2xl p-3.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                        <option value="">ക്ലാസ് തിരഞ്ഞെടുക്കുക</option>
+                        <option value="ക്ലാസ് 1">ക്ലാസ് 1</option>
+                        <option value="ക്ലാസ് 2">ക്ലാസ് 2</option>
+                        <option value="ക്ലാസ് 3">ക്ലാസ് 3</option>
+                        <option value="ക്ലാസ് 4">ക്ലാസ് 4</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-2xl shadow-lg transition text-base">
+                    ആപ്പിലേക്ക് പ്രവേശിക്കാം 🚀
+                </button>
+            </form>
+        </div>
+
+        <!-- Hub View (Two 3D Buttons) -->
+        <div id="view-hub" class="hidden w-full space-y-8 py-6">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-8 text-white shadow-xl text-center space-y-2">
+                <h2 id="welcome-msg" class="text-2xl sm:text-3xl font-extrabold">നമസ്കാരം! ✨</h2>
+                <p class="text-emerald-50 text-xs sm:text-sm font-medium max-w-md mx-auto">
+                    മുണ്ടേക്കരാട് സ്കൂൾ എൽ.എസ്.എസ് പരിശീലനത്തിലേക്ക് സ്വാഗതം. പഠനവും ഗെയിമുകളും ആരംഭിക്കൂ!
+                </p>
+            </div>
+
+            <!-- Two Centered Curved 3D Buttons -->
+            <div class="flex flex-col gap-6 max-w-lg mx-auto px-4 w-full">
+                <button onclick="switchTab('questions')" class="w-full bg-white text-emerald-900 font-extrabold py-6 px-8 btn-3d-main-1 flex items-center justify-between text-lg sm:text-xl border border-emerald-100 group hover:bg-emerald-50/50 transition">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl bg-emerald-100 p-3 rounded-2xl group-hover:scale-110 transition">📚</span>
+                        <div class="text-left">
+                            <div>10 ചോദ്യങ്ങൾ</div>
+                            <div class="text-xs text-slate-500 font-medium mt-0.5">പ്രധാന എൽ.എസ്.എസ് ജനറൽ നോളജ് ചോദ്യങ്ങൾ</div>
+                        </div>
+                    </div>
+                    <span class="bg-emerald-600 text-white p-3 rounded-2xl text-sm shadow">തുടരുക ➔</span>
+                </button>
+
+                <button onclick="switchTab('games')" class="w-full bg-teal-600 text-white font-extrabold py-6 px-8 btn-3d-main-2 flex items-center justify-between text-lg sm:text-xl group hover:bg-teal-700 transition">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl bg-teal-500/50 p-3 rounded-2xl group-hover:scale-110 transition">🎮</span>
+                        <div class="text-left">
+                            <div>ഗെയിമുകൾ</div>
+                            <div class="text-xs text-teal-100 font-medium mt-0.5">ചോദ്യങ്ങൾ പഠിക്കാൻ 5 ഇന്ററാക്ടീവ് ഗെയിമുകൾ</div>
+                        </div>
+                    </div>
+                    <span class="bg-white text-teal-800 p-3 rounded-2xl text-sm shadow font-extrabold">കളിക്കുക ➔</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Questions View -->
+        <div id="view-questions" class="hidden space-y-4 w-full max-w-2xl py-4">
+            <div class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-emerald-100">
+                <button onclick="backToHub()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold">⬅️ തിരികെ</button>
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold text-emerald-800">പ്രധാന 10 എൽ.എസ്.എസ് ചോദ്യങ്ങൾ</h3>
+                </div>
+            </div>
+
+            <div id="questions-list" class="space-y-4">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Games View with Grid Menu -->
+        <div id="view-games" class="hidden space-y-6 w-full max-w-2xl py-4">
+            <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-emerald-100">
+                <button onclick="backToHub()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold">⬅️ പ്രധാന മെനുവിലേക്ക്</button>
+                <h3 class="text-base font-extrabold text-teal-800">🎮 LSS ഇന്ററാക്ടീവ് ഗെയിം മെനു</h3>
+            </div>
+
+            <!-- Game Grid Menu (5 Games in Grid) -->
+            <div id="game-menu-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button onclick="launchGame(1)" class="w-full bg-green-500 hover:bg-green-600 text-white p-5 font-extrabold text-sm game-grid-btn flex flex-col items-center justify-center text-center gap-2 transition">
+                    <span class="text-3xl">🎴</span>
+                    <div>ഗെയിം 1: ഫ്ലാഷ് കാർഡ് മെമ്മറി</div>
+                    <div class="text-[11px] text-green-100 font-medium">ചോദ്യ കാർഡുകൾ തിരിച്ചു പഠിക്കാം</div>
+                </button>
+
+                <button onclick="launchGame(2)" class="w-full bg-orange-500 hover:bg-orange-600 text-white p-5 font-extrabold text-sm game-grid-btn flex flex-col items-center justify-center text-center gap-2 transition">
+                    <span class="text-3xl">🔗</span>
+                    <div>ഗെയിം 2: ഡ്രാഗ് & മാച്ച്</div>
+                    <div class="text-[11px] text-orange-100 font-medium">ചോദ്യവും ഉത്തരവും ഇണക്കി പഠിക്കാം</div>
+                </button>
+
+                <button onclick="launchGame(3)" class="w-full bg-amber-500 hover:bg-amber-600 text-white p-5 font-extrabold text-sm game-grid-btn flex flex-col items-center justify-center text-center gap-2 transition">
+                    <span class="text-3xl">🎯</span>
+                    <div>ഗെയിം 3: ഒഡ് വൺ ഔട്ട്</div>
+                    <div class="text-[11px] text-amber-100 font-medium">ചോദ്യങ്ങളുമായി ചേരാത്തത് കണ്ടെത്താം</div>
+                </button>
+
+                <button onclick="launchGame(4)" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white p-5 font-extrabold text-sm game-grid-btn flex flex-col items-center justify-center text-center gap-2 transition">
+                    <span class="text-3xl">❓</span>
+                    <div>ഗെയിം 4: ക്വിസ് ചലഞ്ച്</div>
+                    <div class="text-[11px] text-indigo-100 font-medium">ഓപ്ഷനുകളിൽ നിന്ന് ശരിയത് തിരഞ്ഞെടുക്കാം</div>
+                </button>
+
+                <button onclick="launchGame(5)" class="w-full bg-rose-500 hover:bg-rose-600 text-white p-5 font-extrabold text-sm game-grid-btn flex flex-col items-center justify-center text-center gap-2 sm:col-span-2 transition">
+                    <span class="text-3xl">⚖️</span>
+                    <div>ഗെയിം 5: ശരിയോ തെറ്റോ? (True or False)</div>
+                    <div class="text-[11px] text-rose-100 font-medium">നൽകിയിരിക്കുന്ന ഉത്തരം ശരിയാണോ എന്ന് പരിശോധിക്കാം</div>
+                </button>
+            </div>
+
+            <!-- Game Arena Box -->
+            <div id="game-arena" class="hidden bg-white p-6 rounded-3xl shadow-2xl border-2 border-emerald-500 relative">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                    <h4 id="game-title" class="font-extrabold text-base text-emerald-800">ഗെയിം വിൻഡോ</h4>
+                    <button onclick="closeGameArena()" class="text-slate-400 hover:text-slate-600 font-bold text-xs bg-slate-100 px-3.5 py-1.5 rounded-xl">✕ ഗെയിം അവസാനിപ്പിക്കുക</button>
+                </div>
+                <div id="game-content" class="min-h-[250px] flex flex-col justify-center items-center text-center">
+                    <!-- Dynamic game content -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-emerald-200 py-4 px-6 text-center text-xs text-slate-600 font-bold mt-auto">
+        LSS APP | Run by GLP School Mundekarad
+    </footer>
+
+    <script>
+        let currentUser = null;
+        let currentClass = null;
+
+        let lssQuestions = [
+            { id: 1, question: "കേരളത്തിലെ ഏറ്റവും വലിയ നദി ഏതാണ്?", options: ["ഭാരതപ്പുഴ", "പെരിയാർ", "പമ്പ", "ചാലിയാർ"], answer: "പെരിയാർ", explanation: "കേരളത്തിൽ ഏറ്റവും കൂടുതൽ നീളമുള്ള നദി പെരിയാർ ആണ് (244 കി.മീ)." },
+            { id: 2, question: "സ്വതന്ത്ര ഇന്ത്യയുടെ ആദ്യത്തെ ഉപരാഷ്ട്രപതി ആരായിരുന്നു?", options: ["ഡോ. രാജേന്ദ്രപ്രസാദ്", "ജവഹർലാൽ നെഹ്റു", "ഡോ. എസ്. രാധാകൃഷ്ണൻ", "സർദാർ വല്ലഭഭായ് പട്ടേൽ"], answer: "ഡോ. എസ്. രാധാകൃഷ്ണൻ", explanation: "സ്വാതന്ത്ര്യാനന്തരം ഇന്ത്യയുടെ ആദ്യ ഉപരാഷ്ട്രപതിയായിരുന്നു ഡോ. എസ്. രാധാകൃഷ്ണൻ." },
+            { id: 3, question: "കേരളത്തിന്റെ ഔദ്യോഗിക പക്ഷി ഏത്?", options: ["മയിൽ", "മലമുഴക്കി വേഴാമ്പൽ", "കുയിൽ", "തത്ത"], answer: "മലമുഴക്കി വേഴാമ്പൽ", explanation: "മലമുഴക്കി വേഴാമ്പലാണ് കേരളത്തിന്റെ ഔദ്യോഗിക പക്ഷി." },
+            { id: 4, question: "ഇന്ത്യയുടെ ദേശീയ ഗീതം 'ജനഗണമന' രചിച്ചത് ആര്?", options: ["ബങ്കിംചന്ദ്ര ചാറ്റർജി", "രവീന്ദ്രനാഥ ടാഗോർ", "മഹാത്മാഗാന്ധി", "വള്ളത്തോൾ"], answer: "രവീന്ദ്രനാഥ ടാഗോർ", explanation: "രവീന്ദ്രനാഥ ടാഗോറാണ് ജനഗണമന രചിച്ചത്." },
+            { id: 5, question: "കമ്പ്യൂട്ടറിന്റെ തലച്ചോറ് (Brain of Computer) എന്നറിയപ്പെടുന്നത് എന്ത്?", options: ["മോണിറ്റർ", "കീബോർഡ്", "സി.പി.യു (CPU)", "ഹാർഡ് ഡിസ്ക്"], answer: "സി.പി.യു (CPU)", explanation: "Central Processing Unit അഥവാ CPU ആണ് കമ്പ്യൂട്ടറിന്റെ തലച്ചോറ്." },
+            { id: 6, question: "ലോക പരിസ്ഥിതി ദിനം ഏതു ദിവസമാണ്?", options: ["ജൂൺ 5", "നവംബർ 1", "ജനുവരി 26", "ഓഗസ്റ്റ് 15"], answer: "ജൂൺ 5", explanation: "പരിസ്ഥിതി സംരക്ഷണത്തിനായി എല്ലാ വർഷവും ജൂൺ 5 ആചരിക്കുന്നു." },
+            { id: 7, question: "കേരളത്തിന്റെ സംസ്ഥാന വൃക്ഷം ഏത്?", options: ["മാവ്", "തെങ്ങ്", "പ്ലാവ്", "വേപ്പ്"], answer: "പ്ലാവ്", explanation: "കേരളത്തിന്റെ ഔദ്യോഗിക സംസ്ഥാന വൃക്ഷം പ്ലാവ് ആണ്." },
+            { id: 8, question: "റെയിൽവേ സ്റ്റേഷനിൽ ട്രെയിൻ വിവരങ്ങൾ അനൗൺസ് ചെയ്ത പ്രശസ്ത മലയാളി ശബ്ദം ആരുടേതാണ്?", options: ["കോമളവല്ലി", "മേരി റോയ്", "സുഗതകുമാരി", "കമലാ സുരയ്യ"], answer: "കോമളവല്ലി", explanation: "ദക്ഷിണ റെയിൽവേയിൽ അനൗൺസ്മെന്റുകൾക്ക് ശബ്ദം നൽകിയ വ്യക്തിയാണ് കോമളവല്ലി." },
+            { id: 9, question: "ആദ്യമായി മനുഷ്യൻ ചന്ദ്രനിൽ കാലുകുത്തിയത് ഏതു വർഷം?", options: ["1947", "1969", "1950", "1975"], answer: "1969", explanation: "അപ്പോളോ 11 ദൗത്യത്തിലൂടെ 1969 ജൂലൈ 20-നാണ് ചന്ദ്രനിൽ കാലുകുത്തിയത്." },
+            { id: 10, question: "കേരളത്തിൽ ഏറ്റവും കൂടുതൽ ജനസംഖ്യയുള്ള ജില്ല ഏത്?", options: ["വയനാട്", "ഇടുക്കി", "മലപ്പുറം", "തിരുവനന്തപുരം"], answer: "മലപ്പുറം", explanation: "കേരളത്തിൽ ഏറ്റവും കൂടുതൽ ജനസംഖ്യയുള്ള ജില്ല മലപ്പുറം ആണ്." }
+        ];
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('student-name').value.trim();
+            const cls = document.getElementById('student-class').value;
+            if(!name || !cls) return;
+
+            currentUser = name;
+            currentClass = cls;
+
+            document.getElementById('display-user-info').textContent = `${currentUser} (${currentClass})`;
+            document.getElementById('user-badge').classList.remove('hidden');
+            document.getElementById('welcome-msg').textContent = `നമസ്കാരം ${currentUser}! ✨`;
+
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-hub').classList.remove('hidden');
+        }
+
+        function logout() {
+            currentUser = null;
+            currentClass = null;
+            document.getElementById('user-badge').classList.add('hidden');
+            document.getElementById('view-hub').classList.add('hidden');
+            document.getElementById('view-questions').classList.add('hidden');
+            document.getElementById('view-games').classList.add('hidden');
+            document.getElementById('view-login').classList.remove('hidden');
+            document.getElementById('student-name').value = "";
+            document.getElementById('student-class').value = "";
+        }
+
+        function switchTab(tab) {
+            document.getElementById('view-hub').classList.add('hidden');
+            const qView = document.getElementById('view-questions');
+            const gView = document.getElementById('view-games');
+
+            if (tab === 'questions') {
+                qView.classList.remove('hidden');
+                gView.classList.add('hidden');
+                renderQuestions();
+            } else {
+                qView.classList.add('hidden');
+                gView.classList.remove('hidden');
+                closeGameArena();
+            }
+        }
+
+        function backToHub() {
+            document.getElementById('view-questions').classList.add('hidden');
+            document.getElementById('view-games').classList.add('hidden');
+            document.getElementById('view-hub').classList.remove('hidden');
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-list');
+            container.innerHTML = "";
+
+            lssQuestions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-emerald-100 space-y-3";
+                
+                let optionsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
+                q.options.forEach((opt, optIdx) => {
+                    optionsHtml += `<div class="bg-emerald-50/50 border border-emerald-100 px-3.5 py-2 rounded-xl text-xs font-semibold text-emerald-900">${String.fromCharCode(65 + optIdx)}. ${opt}</div>`;
+                });
+                optionsHtml += '</div>';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-lg">ചോദ്യം ${idx + 1}</span>
+                    </div>
+                    <h4 class="font-bold text-base text-slate-800">${q.question}</h4>
+                    ${optionsHtml}
+                    <div class="pt-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-t border-slate-100">
+                        <button onclick="toggleAnswer(${idx})" id="ans-btn-${idx}" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl shadow transition">
+                            👁️ ഉത്തരം കാണുക
+                        </button>
+                        <div id="ans-box-${idx}" class="hidden text-xs text-emerald-700 font-bold bg-emerald-50 px-3.5 py-2 rounded-xl w-full sm:w-auto">
+                            ശരിയുത്തരം: <span class="underline">${q.answer}</span> - <span class="font-normal text-slate-600">${q.explanation}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleAnswer(idx) {
+            const ansBox = document.getElementById(`ans-box-${idx}`);
+            const btn = document.getElementById(`ans-btn-${idx}`);
+            if (ansBox.classList.contains('hidden')) {
+                ansBox.classList.remove('hidden');
+                btn.textContent = "🙈 ഉത്തരം മറയ്ക്കുക";
+                btn.className = "text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2.5 rounded-xl transition";
+            } else {
+                ansBox.classList.add('hidden');
+                btn.textContent = "👁️ ഉത്തരം കാണുക";
+                btn.className = "text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl shadow transition";
+            }
+        }
+
+        function showToast(msg, type) {
+            const notify = document.createElement('div');
+            notify.className = `fixed bottom-5 right-5 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold z-50 animate-bounce ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
+            notify.textContent = msg;
+            document.body.appendChild(notify);
+            setTimeout(() => notify.remove(), 2500);
+        }
+
+        let activeQuizIndex = 0;
+
+        function launchGame(gameId) {
+            const arena = document.getElementById('game-arena');
+            const menuList = document.getElementById('game-menu-list');
+            const titleEl = document.getElementById('game-title');
+            
+            menuList.classList.add('hidden');
+            arena.classList.remove('hidden');
+            activeQuizIndex = 0;
+
+            if (gameId === 1) { titleEl.textContent = "🎴 ഗെയിം 1: ഫ്ലാഷ് കാർഡ് മെമ്മറി"; renderFlashcardGame(); }
+            else if (gameId === 2) { titleEl.textContent = "🔗 ഗെയിം 2: ഡ്രാഗ് & മാച്ച്"; renderDragMatchGame(); }
+            else if (gameId === 3) { titleEl.textContent = "🎯 ഗെയിം 3: ഒഡ് വൺ ഔട്ട്"; renderOddOneOutGame(); }
+            else if (gameId === 4) { titleEl.textContent = "❓ ഗെയിം 4: ക്വിസ് ചലഞ്ച്"; renderQuizChallengeGame(); }
+            else if (gameId === 5) { titleEl.textContent = "⚖️ ഗെയിം 5: ശരിയോ തെറ്റോ?"; renderTrueOrFalseGame(); }
+        }
+
+        function closeGameArena() {
+            document.getElementById('game-arena').classList.add('hidden');
+            document.getElementById('game-menu-list').classList.remove('hidden');
+        }
+
+        // Game 1: Flashcard Memory
+        function renderFlashcardGame() {
+            const content = document.getElementById('game-content');
+            if (activeQuizIndex >= lssQuestions.length) activeQuizIndex = 0;
+            const q = lssQuestions[activeQuizIndex];
+            content.innerHTML = `
+                <div class="w-full space-y-4">
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 border border-green-200 p-6 rounded-3xl shadow-inner min-h-[160px] flex flex-col justify-center items-center cursor-pointer" onclick="this.querySelector('.card-front').classList.toggle('hidden'); this.querySelector('.card-back').classList.toggle('hidden');">
+                        <span class="text-xs font-bold text-green-700 mb-2">ഫ്ലാഷ് കാർഡ് #${activeQuizIndex + 1} (ഉത്തരം കാണാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക)</span>
+                        <h5 class="font-bold text-base text-slate-800 card-front">${q.question}</h5>
+                        <h5 class="font-extrabold text-lg text-green-800 card-back hidden">💡 ഉത്തരം: ${q.answer}</h5>
+                    </div>
+                    <div class="flex justify-between">
+                        <button onclick="activeQuizIndex = Math.max(0, activeQuizIndex - 1); renderFlashcardGame();" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">⬅️ മുമ്പത്തെ</button>
+                        <span class="text-xs font-bold text-slate-500 self-center">${activeQuizIndex + 1} / ${lssQuestions.length}</span>
+                        <button onclick="activeQuizIndex++; renderFlashcardGame();" class="bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold">അടുത്തത് ➡️</button>
+                    </div>
+                </div>`;
+        }
+
+        // Game 2: Drag & Match
+        let matchCount = 0;
+        let selectedQNode = null;
+        function renderDragMatchGame() {
+            const content = document.getElementById('game-content');
+            if (matchCount >= 3) {
+                content.innerHTML = `<div class="space-y-3 py-6"><div class="text-4xl">🏆</div><h5 class="text-xl font-bold text-orange-800">മാച്ച് ഗെയിം വിജയിച്ചു! 🎉</h5><button onclick="matchCount=0; launchGame(2);" class="bg-orange-600 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow">വീണ്ടും കളിക്കുക 🔄</button></div>`;
+                return;
+            }
+            const subset = lssQuestions.slice(matchCount, matchCount + 3);
+            let qItems = subset.map((item, idx) => ({ id: idx, text: item.question, answer: item.answer }));
+            let aItems = subset.map((item) => ({ text: item.answer })).sort(() => Math.random() - 0.5);
+
+            content.innerHTML = `
+                <div class="w-full space-y-4 text-left">
+                    <p class="text-xs text-slate-500 font-medium">ഇടതുവശത്തെ ചോദ്യത്തിൽ ക്ലിക്ക് ചെയ്ത ശേഷം, വലതുവശത്തുനിന്നും ശരിയായ ഉത്തരത്തിൽ ക്ലിക്ക് ചെയ്യുക.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            ${qItems.map(q => `<div onclick="selectMatchQ('${q.answer.replace(/'/g, "\\\\'")}', this)" class="p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-orange-50 font-semibold text-xs">${q.text}</div>`).join('')}
+                        </div>
+                        <div class="space-y-2">
+                            ${aItems.map(a => `<div onclick="selectMatchA('${a.text.replace(/'/g, "\\\\'")}', this)" class="p-3 bg-orange-50 border border-orange-200 rounded-xl cursor-pointer hover:bg-orange-100 font-bold text-xs text-orange-900">${a.text}</div>`).join('')}
+                        </div>
+                    </div>
+                </div>`;
+        }
+        function selectMatchQ(ans, node) {
+            document.querySelectorAll('#game-content div').forEach(d => d.classList.remove('ring-2', 'ring-orange-500'));
+            node.classList.add('ring-2', 'ring-orange-500');
+            selectedQNode = ans;
+        }
+        function selectMatchA(ansText, node) {
+            if (!selectedQNode) { showToast("⚠️ ആദ്യം ചോദ്യം തിരഞ്ഞെടുക്കൂ!", "error"); return; }
+            if (selectedQNode === ansText) {
+                showToast("🌟 അഭിനന്ദനങ്ങൾ! ഉത്തരം ശരിയാണ്!", "success");
+                matchCount++;
+                selectedQNode = null;
+                setTimeout(renderDragMatchGame, 600);
+            } else {
+                showToast("💪 ശ്രമിച്ചു നോക്കൂ! അടുത്തത് ശരിയാക്കാം!", "error");
+                selectedQNode = null;
+            }
+        }
+
+        // Game 3: Odd One Out
+        function renderOddOneOutGame() {
+            const content = document.getElementById('game-content');
+            content.innerHTML = `
+                <div class="space-y-4 w-full text-center">
+                    <h5 class="font-extrabold text-base text-amber-800">വ്യത്യസ്തമായതിനെ കണ്ടെത്തുക (Odd One Out)</h5>
+                    <p class="text-xs text-slate-600">താഴെ നൽകിയിവയിൽ കേരളവുമായി ബന്ധമില്ലാത്തത് ഏത്?</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button onclick="showToast('💪 ശ്രമിച്ചു നോക്കൂ!', 'error')" class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold hover:bg-amber-100">പെരിയാർ (കേരളത്തിലെ നദി)</button>
+                        <button onclick="showToast('💪 ശ്രമിച്ചു നോക്കൂ!', 'error')" class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold hover:bg-amber-100">മലമുഴക്കി വേഴാമ്പൽ (കേരള പക്ഷി)</button>
+                        <button onclick="showToast('🌟 അഭിനന്ദനങ്ങൾ! മിടുക്കൻ! ഇത് കേരളത്തിന് പുറത്താണ്!', 'success')" class="p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-900 hover:bg-emerald-100">താജ്മഹൽ (ഉത്തർപ്രദേശ്)</button>
+                        <button onclick="showToast('💪 ശ്രമിച്ചു നോക്കൂ!', 'error')" class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold hover:bg-amber-100">പ്ലാവ് (കേരള വൃക്ഷം)</button>
+                    </div>
+                </div>`;
+        }
+
+        // Game 4: Quiz Challenge
+        function renderQuizChallengeGame() {
+            const content = document.getElementById('game-content');
+            if (activeQuizIndex >= lssQuestions.length) activeQuizIndex = 0;
+            const q = lssQuestions[activeQuizIndex];
+            
+            content.innerHTML = `
+                <div class="w-full space-y-4 text-left">
+                    <div class="flex justify-between text-xs text-indigo-700 font-bold">
+                        <span>ചോദ്യം ${activeQuizIndex + 1} / ${lssQuestions.length}</span>
+                    </div>
+                    <h5 class="font-bold text-base text-slate-800">${q.question}</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${q.options.map(opt => `<button onclick="checkQuizAnswer('${opt.replace(/'/g, "\\\\'")}', '${q.answer.replace(/'/g, "\\\\'")}')" class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs font-semibold text-indigo-900 hover:bg-indigo-100 text-left">${opt}</button>`).join('')}
+                    </div>
+                </div>`;
+        }
+        function checkQuizAnswer(selected, correct) {
+            if (selected === correct) {
+                showToast("🌟 അഭിനന്ദനങ്ങൾ! ഉത്തരം ശരിയാണ്!", "success");
+                activeQuizIndex++;
+                setTimeout(renderQuizChallengeGame, 600);
+            } else {
+                showToast("💪 തെറ്റായ ഉത്തരം! വീണ്ടും ശ്രമിക്കൂ!", "error");
+            }
+        }
+
+        // Game 5: True or False
+        function renderTrueOrFalseGame() {
+            const content = document.getElementById('game-content');
+            if (activeQuizIndex >= lssQuestions.length) activeQuizIndex = 0;
+            const q = lssQuestions[activeQuizIndex];
+            
+            const isTrueStatement = Math.random() > 0.5;
+            const displayedAnswer = isTrueStatement ? q.answer : "തെറ്റായ ഉത്തരം മാതൃക";
+
+            content.innerHTML = `
+                <div class="w-full space-y-4 text-center">
+                    <span class="text-xs font-bold text-rose-700">ചോദ്യം ${activeQuizIndex + 1} / ${lssQuestions.length}</span>
+                    <h5 class="font-bold text-base text-slate-800">${q.question}</h5>
+                    <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl font-bold text-rose-900 text-sm">
+                        ഉത്തരം: "${displayedAnswer}"
+                    </div>
+                    <p class="text-xs text-slate-500">ഈ പ്രസ്താവന ശരിയാണോ തെറ്റാണോ?</p>
+                    <div class="flex justify-center gap-4 pt-2">
+                        <button onclick="checkTrueFalse(${isTrueStatement}, true)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow">ശരി (True) ✅</button>
+                        <button onclick="checkTrueFalse(${isTrueStatement}, false)" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow">തെറ്റ് (False) ❌</button>
+                    </div>
+                </div>`;
+        }
+        function checkTrueFalse(actualState, userChoice) {
+            if (actualState === userChoice) {
+                showToast("🌟 അഭിനന്ദനങ്ങൾ! ശരിയായി ഊഹിച്ചു!", "success");
+                activeQuizIndex++;
+                setTimeout(renderTrueOrFalseGame, 600);
+            } else {
+                showToast("💪 തെറ്റായ ഉത്തരം! അടുത്തത് നോക്കാം!", "error");
+            }
+        }
+    </script>
+
+</body>
+</html>
